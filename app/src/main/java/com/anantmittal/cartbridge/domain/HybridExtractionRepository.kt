@@ -3,9 +3,8 @@ package com.anantmittal.cartbridge.domain
 import android.graphics.Bitmap
 import android.util.Log
 import com.anantmittal.cartbridge.data.CartItem
+import com.google.firebase.ai.FirebaseAI
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.vertexai.FirebaseVertexAI
-import com.google.firebase.vertexai.type.GenerateContentResponse
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -17,7 +16,7 @@ import kotlinx.serialization.decodeFromString
 
 class HybridExtractionRepository(
     private val remoteConfig: FirebaseRemoteConfig,
-    private val firebaseVertexAI: FirebaseVertexAI
+    private val firebaseAI: FirebaseAI
 ) {
     private val textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
     
@@ -64,12 +63,12 @@ class HybridExtractionRepository(
                 Log.w(TAG, "Gemini Nano failed or unsupported, falling back to Vertex AI: ${e.message}")
             }
 
-            // Step 3b: Fallback to Firebase Vertex AI (Gemini 1.5 Flash)
+            // Step 3b: Fallback to Firebase AI Logic (Gemini)
             if (jsonString.isNullOrBlank()) {
-                val vertexModel = firebaseVertexAI.generativeModel("gemini-1.5-flash")
-                val response = vertexModel.generateContent(combinedPrompt)
+                val model = firebaseAI.generativeModel("gemini-3.7-flash")
+                val response = model.generateContent(combinedPrompt)
                 jsonString = response.text
-                Log.d(TAG, "Successfully extracted using Firebase Vertex AI.")
+                Log.d(TAG, "Successfully extracted using Firebase AI Logic.")
             }
 
             // 4. Parse JSON

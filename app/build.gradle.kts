@@ -37,6 +37,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -53,11 +54,12 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.firebase.ai)
     ksp(libs.room.compiler)
     implementation(libs.mlkit.text.recognition)
-    implementation(libs.firebase.vertexai)
     implementation(libs.firebase.config)
     implementation(libs.firebase.appcheck)
+    implementation(libs.firebase.appcheck.debug)
     implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
