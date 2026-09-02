@@ -21,6 +21,8 @@ import com.anantmittal.cartbridge.ui.theme.CartBridgeTheme
 import com.anantmittal.cartbridge.utils.ImageDownsampler
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.vertexai.FirebaseVertexAI
+import com.google.firebase.Firebase
+import com.google.firebase.vertexai.vertexAI
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -29,7 +31,7 @@ class MainActivity : ComponentActivity() {
         MainViewModelFactory(
             HybridExtractionRepository(
                 FirebaseRemoteConfig.getInstance(),
-                FirebaseVertexAI.getInstance()
+                Firebase.vertexAI
             ),
             CartDatabase.getDatabase(this).cartDao()
         )

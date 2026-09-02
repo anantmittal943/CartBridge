@@ -14,7 +14,6 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.decodeFromString
-import com.google.mlkit.vision.generativeai.GenerativeModel as MLKitGenerativeModel
 
 class HybridExtractionRepository(
     private val remoteConfig: FirebaseRemoteConfig,
@@ -53,12 +52,14 @@ class HybridExtractionRepository(
             
             // Step 3a: Attempt Android AICore (Gemini Nano)
             try {
-                 // Note: ML Kit Generative AI / Android AICore integration
-                 // This requires specific device support. We wrap in try-catch to fallback safely.
-                 val nanoModel = MLKitGenerativeModel("gemini-nano")
-                 val response = nanoModel.generateContent(combinedPrompt).await()
-                 jsonString = response.text
-                 Log.d(TAG, "Successfully extracted using Gemini Nano (AICore).")
+                 // Note: Gemini Nano via AICore currently requires specific Early Access SDKs
+                 // (e.g. com.google.ai.edge.aicore or ML Kit Generative AI). 
+                 // We wrap in a conceptual try-catch to fallback safely to Vertex AI.
+                 // In production, instantiate the appropriate Nano client here.
+                 // val nanoModel = MLKitGenerativeModel("gemini-nano")
+                 // val response = nanoModel.generateContent(combinedPrompt).await()
+                 // jsonString = response.text
+                 throw Exception("Nano SDK not integrated - falling back")
             } catch (e: Exception) {
                 Log.w(TAG, "Gemini Nano failed or unsupported, falling back to Vertex AI: ${e.message}")
             }

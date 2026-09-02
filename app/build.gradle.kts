@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.google.firebase.crashlytics)
     alias(libs.plugins.kotlin.serialization)
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -53,13 +53,12 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.mlkit.text.recognition)
     implementation(libs.firebase.vertexai)
     implementation(libs.firebase.config)
     implementation(libs.firebase.appcheck)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.mlkit.generative.completion)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
