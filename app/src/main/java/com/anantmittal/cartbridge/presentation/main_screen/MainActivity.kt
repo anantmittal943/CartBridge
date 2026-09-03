@@ -1,4 +1,4 @@
-package com.anantmittal.cartbridge
+package com.anantmittal.cartbridge.presentation.main_screen
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -22,13 +22,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             MaterialTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.Companion.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Box(modifier = Modifier.Companion.fillMaxSize(), contentAlignment = Alignment.Companion.Center) {
                         Text(
                             text = "CartBridge",
-                            fontWeight = FontWeight.Bold,
+                            fontWeight = FontWeight.Companion.Bold,
                             fontSize = 20.sp
                         )
                     }
