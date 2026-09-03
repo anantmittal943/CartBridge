@@ -47,6 +47,7 @@ firebase-appcheck-debug = { group = "com.google.firebase", name = "firebase-appc
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 mlkit-generative-completion = { group = "com.google.mlkit", name = "generative-completion", version.ref = "mlkitGenerative" }
 firebase-ai = { group = "com.google.firebase", name = "firebase-ai", version.ref = "firebaseAi" }
+androidx-cardview = { group = "androidx.cardview", name = "cardview", version = "1.0.0" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

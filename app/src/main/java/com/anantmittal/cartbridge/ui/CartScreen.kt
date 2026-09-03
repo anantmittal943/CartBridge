@@ -3,23 +3,55 @@ package com.anantmittal.cartbridge.ui
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.provider.Settings
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.anantmittal.cartbridge.bubble.FloatingBubbleService
 import com.anantmittal.cartbridge.data.CartItem
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,6 +62,30 @@ fun CartScreen(
     val items by viewModel.allItems.collectAsState()
     val isProcessing by viewModel.isProcessing.collectAsState()
     val context = LocalContext.current
+
+    var bubbleRunning by remember { mutableStateOf(false) }
+    var showOverlayDialog by remember { mutableStateOf(false) }
+
+    if (showOverlayDialog) {
+        AlertDialog(
+            onDismissRequest = { showOverlayDialog = false },
+            title = { Text("Enable Overlay Permission") },
+            text = { Text("Cart Bridge needs the 'Display over other apps' permission to show the floating bubble. Tap 'Open Settings' to enable it.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showOverlayDialog = false
+                    val intent = Intent(
+                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:${context.packageName}")
+                    ).apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK }
+                    context.startActivity(intent)
+                }) { Text("Open Settings") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showOverlayDialog = false }) { Text("Cancel") }
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -49,6 +105,37 @@ fun CartScreen(
                         }
                     }
                 }
+            )
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = {
+                    if (!Settings.canDrawOverlays(context)) {
+                        showOverlayDialog = true
+                    } else {
+                        if (!bubbleRunning) {
+                            context.startForegroundService(
+                                Intent(context, FloatingBubbleService::class.java)
+                            )
+                            bubbleRunning = true
+                        } else {
+                            context.stopService(
+                                Intent(context, FloatingBubbleService::class.java)
+                            )
+                            bubbleRunning = false
+                        }
+                    }
+                },
+                icon = { Text(if (bubbleRunning) "●" else "◯", fontSize = 14.sp) },
+                text = { Text(if (bubbleRunning) "Bubble Active" else "Start Bubble") },
+                containerColor = if (bubbleRunning)
+                    MaterialTheme.colorScheme.tertiaryContainer
+                else
+                    MaterialTheme.colorScheme.primaryContainer,
+                contentColor = if (bubbleRunning)
+                    MaterialTheme.colorScheme.onTertiaryContainer
+                else
+                    MaterialTheme.colorScheme.onPrimaryContainer
             )
         },
         containerColor = MaterialTheme.colorScheme.background,
@@ -139,7 +226,9 @@ fun CartItemCard(item: CartItem, context: Context) {
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         )
     ) {
-        Column(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
+        Column(modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
