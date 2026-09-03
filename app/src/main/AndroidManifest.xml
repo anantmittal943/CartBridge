@@ -4,14 +4,6 @@
     <!-- Standard network permission -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- ─── Floating Bubble ────────────────────────────────── -->
-    <!-- Required to draw over other apps (the floating bubble) -->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <!-- Required to keep the foreground service alive -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
-
     <application
         android:name=".CartBridgeApplication"
         android:allowBackup="true"
@@ -41,43 +33,6 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-
-        <!-- ─── Transparent screen-capture consent activity ─ -->
-        <activity
-            android:name=".screenshot.ScreenCaptureRequestActivity"
-            android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:excludeFromRecents="true" />
-
-        <!-- ─── Floating Bubble Foreground Service ─────────── -->
-        <service
-            android:name=".bubble.FloatingBubbleService"
-            android:exported="false"
-            android:foregroundServiceType="specialUse">
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Floating overlay bubble for Cart Bridge screenshot tool" />
-        </service>
-
-        <!-- ─── Long Screenshot Capture Foreground Service ─── -->
-        <service
-            android:name=".screenshot.LongScreenshotCaptureService"
-            android:exported="false"
-            android:foregroundServiceType="mediaProjection" />
-
-        <!-- ─── Accessibility Service ──────────────────────── -->
-        <service
-            android:name=".screenshot.CartBridgeAccessibilityService"
-            android:exported="true"
-            android:label="Cart Bridge Long Screenshot"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
-            <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService" />
-            </intent-filter>
-            <meta-data
-                android:name="android.accessibilityservice"
-                android:resource="@xml/accessibility_service_config" />
-        </service>
 
         <!-- ─── FileProvider for sharing screenshots ─────────── -->
         <provider
