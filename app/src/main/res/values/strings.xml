@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CartBridge</string>
+    <string name="accessibility_service_description">Cart Bridge uses accessibility to scroll the screen while capturing long screenshots. No screen content is read or stored by this service.</string>
 </resources>
