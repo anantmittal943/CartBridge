@@ -3,7 +3,9 @@ package com.anantmittal.cartbridge.ui
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
@@ -82,12 +84,15 @@ fun CartItemRow(item: CartItem, context: Context) {
         Spacer(modifier = Modifier.height(8.dp))
         
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             StoreButton("Amazon", context, "https://www.amazon.in/s?k=", item.name)
             StoreButton("Blinkit", context, "https://blinkit.com/s/?q=", item.name)
             StoreButton("Zepto", context, "https://www.zeptonow.com/search?q=", item.name)
+            StoreButton("Instamart", context, "https://www.swiggy.com/instamart/search?custom_back=true&query=", item.name)
         }
     }
 }

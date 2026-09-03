@@ -6,7 +6,6 @@ import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
-
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 
 class CartBridgeApplication : Application() {
