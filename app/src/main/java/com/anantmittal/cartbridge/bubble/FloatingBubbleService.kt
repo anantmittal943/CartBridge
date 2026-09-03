@@ -82,7 +82,8 @@ class FloatingBubbleService : Service() {
             y = 300
         }
 
-        bubbleView = LayoutInflater.from(this).inflate(R.layout.view_floating_bubble, null)
+        val themedContext = android.view.ContextThemeWrapper(this, R.style.Theme_CartBridge)
+        bubbleView = LayoutInflater.from(themedContext).inflate(R.layout.view_floating_bubble, null)
 
         bubbleView!!.setOnTouchListener { view, event ->
             when (event.action) {
@@ -139,7 +140,8 @@ class FloatingBubbleService : Service() {
             gravity = Gravity.CENTER
         }
 
-        menuView = LayoutInflater.from(this).inflate(R.layout.view_bubble_menu, null)
+        val themedContext = android.view.ContextThemeWrapper(this, R.style.Theme_CartBridge)
+        menuView = LayoutInflater.from(themedContext).inflate(R.layout.view_bubble_menu, null)
 
         // Long Screenshot
         menuView!!.findViewById<LinearLayout>(R.id.menu_long_screenshot).setOnClickListener {
