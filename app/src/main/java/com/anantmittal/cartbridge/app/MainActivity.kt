@@ -1,4 +1,4 @@
-package com.anantmittal.cartbridge.presentation.main_screen
+package com.anantmittal.cartbridge.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
