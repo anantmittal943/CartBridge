@@ -2,6 +2,7 @@ package com.anantmittal.cartbridge.app
 
 import android.app.Application
 import com.anantmittal.cartbridge.BuildConfig
+import com.anantmittal.cartbridge.di.initKoin
 import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
@@ -12,6 +13,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 class CartBridgeApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+        initKoin(this)
 
         FirebaseApp.initializeApp(this)
 
